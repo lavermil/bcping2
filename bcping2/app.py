@@ -22,7 +22,7 @@ def ping_loop():
 def index():
     results = load_hosts()
     for host in results:
-        host.update({"timestamp": str(datetime.timedelta(seconds=host["duration"]))})
+        host["timestamp"] = str(datetime.timedelta(seconds=host.get("duration", 0)))
     return render_template("index.html", results=results)
 
 
@@ -39,11 +39,15 @@ def manage():
                 {
                     "name": request.form["name"],
                     "ip": request.form["ip"],
-                    "address": request.form["address"],
-                    "phone": request.form["phone"],
                     "duration": 0,
                     "alive": False,
                     "attempt": 2,
+                    "total_pings": 0,
+                    "successful_pings": 0,
+                    "failed_pings": 0,
+                    "last_rtt": None,
+                    "avg_rtt": None,
+                    "rtt_list": []
                 }
             )
 
@@ -58,7 +62,24 @@ def manage():
                     for prop in form_properties:
                         host[prop] = request.form[prop]
                     break
-
+        elif action == "reset":
+            # Delete the IP we want to reset the stats for.
+            reset_ip = request.form["reset_ip"]
+            # Re-Add the IP we want to reset the stats for.
+            hosts = [h for h in hosts if h["ip"] != reset_ip]
+            hosts.append({
+                "name": request.form["reset_name"],
+                "ip": request.form["reset_ip"],
+                "duration": 0,
+                "alive": False,
+                "attempt": 2,
+                "total_pings": 0,
+                "successful_pings": 0,
+                "failed_pings": 0,
+                "last_rtt": None,
+                "avg_rtt": None,
+                "rtt_list": []
+            })
         save_hosts(hosts)
         return redirect(url_for("manage"))
 
