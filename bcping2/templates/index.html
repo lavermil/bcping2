@@ -101,7 +101,19 @@
             <div>
                 <table class="striped">
                     <thead>
-                        <tr><th>Status</th><th>Name</th><th>IP</th><th>Address</th><th>Phone</th><th>Duration</th></tr>
+                        <tr>
+                            <th>Status</th>
+                            <th>Name</th>
+                            <th>IP</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Duration</th>
+                            <th>Total Pings</th>
+                            <th>Successful</th>
+                            <th>Failed</th>
+                            <th>Last RTT (ms)</th>
+                            <th>Avg RTT (ms)</th>
+                        </tr>
                     </thead>
                     {% for server in results %}
                     <tr>
@@ -111,6 +123,12 @@
                         <td>{{ server.address }}</td>
                         <td>{{ server.phone }}</td>
                         <td>{{ server.timestamp }}</td>
+                        <td>{{ server.timestamp }}</td>
+                        <td>{{ server.total_pings }}</td>
+                        <td>{{ server.successful_pings }}</td>
+                        <td>{{ server.failed_pings }}</td>
+                        <td>{{ '%.2f' % server.last_rtt if server.last_rtt is not none else 'N/A' }}</td>
+                        <td>{{ '%.2f' % server.avg_rtt if server.avg_rtt is not none else 'N/A' }}</td>
                     </tr>
                     {% endfor %}
                 </table>
