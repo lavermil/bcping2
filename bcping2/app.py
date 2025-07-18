@@ -39,8 +39,8 @@ def manage():
                 {
                     "name": request.form["name"],
                     "ip": request.form["ip"],
-                    "address": request.form["address"],
-                    "phone": request.form["phone"],
+                    "address": request.form.get("address",""),
+                    "phone": request.form.get("phone",""),
                     "duration": 0,
                     "alive": False,
                     "attempt": 2,
@@ -72,8 +72,8 @@ def manage():
             hosts.append({
                 "name": request.form["reset_name"],
                 "ip": request.form["reset_ip"],
-                "address": request.form["reset_address"],
-                "phone": request.form["reset_phone"],
+                "address": request.form.get("reset_address",""),
+                "phone": request.form.get("reset_phone",""),
                 "duration": 0,
                 "alive": False,
                 "attempt": 2,
